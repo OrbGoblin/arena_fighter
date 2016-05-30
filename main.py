@@ -8,9 +8,6 @@ def initialize_character(char_type, name):
     char = character.Character(char_type, name)
     return char
 
-def town_menu(player):
-    i = 0
-
 if __name__ == "__main__":
 
     quit_game = False
