@@ -4,6 +4,8 @@ import battle
 import shop
 
 class Town():
+    def __init__(self):
+        self.shop = shop.Shop()
 
     def main_menu(self, player_group):
         while True:
@@ -22,7 +24,7 @@ class Town():
                 combat = battle.Battle(battle_group)
                 combat.start_battle(battle_group)
             elif choice == 2:
-                shop.main_menu(player_group)
+                self.shop.main_menu(player_group)
             elif choice == 3:
                 self.visit_inn(player_group)
             elif choice == 5:

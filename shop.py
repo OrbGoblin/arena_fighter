@@ -3,7 +3,7 @@ import techniques
 class Shop():
     def __init__(self):
         # TODO: turn this into a function that references a database
-        self.inventory = {}
+        self.inventory = [techniques.BeefJerky()]
         self.sell_markdown = 0.5
 
     def main_menu(self, player_group):
@@ -14,9 +14,9 @@ class Shop():
             print "3) Quit"
             print
             for player in player_group:
-                print player.name + " has " + player.money
+                print player.name + " has " + str(player.money)
             print
-            choice = raw_input()
+            choice = int(raw_input())
             if choice == 1:
                 self.buy_menu(player_group)
             elif choice == 2:
@@ -29,20 +29,21 @@ class Shop():
         print "Welcome to the buy menu."
         print "Please select an item you wish to buy."
         print
+        inventory_idx = 0
         for inventory_item in self.inventory:
-            print inventory_item.name + "\tCost: " + str(inventory_item.money_cost)
-            tmp_inventory_dict[inventory_item.name] = inventory_item
-        print "Type the name of the item you want to buy"
-        item_choice = raw_input()
+            print str(inventory_idx + 1) + ") " + inventory_item.name + "\tCost: " + str(inventory_item.money_cost)
+            inventory_idx +=1
+        print "Enter the # of the inventory item you want."
+        item_choice = int(raw_input())
         print "Enter how many you would like to buy."
-        qty_choice = raw_input()
+        qty_choice = int(raw_input())
         print "Who is this for?"
         for player in player_group:
             print player.name
         player_choice = raw_input()
         for player in player_group:
             if player_choice == player.name:
-                item_to_add = tmp_inventory_dict[item_choice]
+                item_to_add = self.inventory[item_choice-1]
                 # Add if item already exists in inventory
                 try:
                     player.inventory[item_to_add] +=1
@@ -65,13 +66,13 @@ class Shop():
         print "Please select an item you wish to sell."
         print
         for inventory_item in selected_player.inventory:
-            print inventory_item.name + "\tSale Price: " + str(inventory_item.money_cost * self.sell_markdown)
+            print inventory_item.name + "\tSale Price: " + str(inventory_item.money_cost * self.sell_markdown) + "\tQty: " + str(selected_player.inventory[inventory_item])
             tmp_inventory_dict[inventory_item.name] = inventory_item
         print "Type the name of the item you want to sell"
         item_choice = raw_input()
         print "Enter how many you would like to sell."
         # TODO: put guard around selling more than you have
-        qty_choice = raw_input()
+        qty_choice = int(raw_input())
         item_to_sell = tmp_inventory_dict[item_choice]
         player.inventory[item_to_sell] -= qty_choice
         # Delete the item from inventory if

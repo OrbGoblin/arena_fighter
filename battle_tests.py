@@ -60,6 +60,9 @@ class BattleTests(unittest.TestCase):
         combatant.is_dead = True
         self.assertFalse(self.combat.take_turn(combatant))
 
+    def test_attack(self):
+        battle_group = self.generate_battle_group()
+
 
 
 if __name__ == "__main__":

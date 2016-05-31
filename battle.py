@@ -15,10 +15,10 @@ class Battle():
             battle_order = self.determine_initiative(battle_group)
             for combatant in battle_order:
                 battle_over = self.take_turn(combatant)
-            if self.did_someone_win(battle_group, "player"):
-                battle_over = True
-            if self.did_someone_win(battle_group, "opponent"):
-                battle_over = True
+                if self.did_someone_win(battle_group, "player"):
+                    battle_over = True
+                if self.did_someone_win(battle_group, "opponent"):
+                    battle_over = True
 
     def take_turn(self, combatant):
         if combatant.is_dead:
@@ -35,7 +35,7 @@ class Battle():
         print "3) Technique"
         print "4) Use Item"
         print "5) Retreat"
-        choice = input(raw_input())
+        choice = int(raw_input())
         # Attack
         if choice == 1:
             self.attack(combatant)
@@ -87,12 +87,12 @@ class Battle():
             active_technique.activate_technique(combatant, chosen_targets)
 
     def attack(self, combatant):
-        list_of_opponents = [combatant for combatant in self.battle_group if combatant.char_type == "opponent" and combatant.is_dead == False]
+        list_of_opponents = [opponent for opponent in self.battle_group if opponent.char_type == "opponent" and opponent.is_dead == False]
         print "Choose an opponent to attack!"
         for i in xrange(len(list_of_opponents)):
             print str(i+1) + ") " + list_of_opponents[i].name
         choice = int(raw_input())
-        self.attack_opponent(combatant, list_of_opponents[choice])
+        self.attack_opponent(combatant, list_of_opponents[choice-1])
         return choice
 
 
