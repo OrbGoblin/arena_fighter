@@ -75,5 +75,5 @@ class Shop():
         item_to_sell = tmp_inventory_dict[item_choice]
         player.inventory[item_to_sell] -= qty_choice
         # Delete the item from inventory if
-        if player.inventory[item_to_sell] = 0:
+        if player.inventory[item_to_sell] ==10:
             del player.inventory[item_to_sell]

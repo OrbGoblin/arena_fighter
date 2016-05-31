@@ -1,18 +1,14 @@
-import sys
-import character
 import battle
 import character
 import town
-
-def initialize_character(char_type, name):
-    char = character.Character(char_type, name)
-    return char
 
 if __name__ == "__main__":
 
     quit_game = False
     char_type = "player"
-    player = character.Character("player")
+    char_name = "Test McTesterton"
+    player = character.Character(char_type, char_name)
+    active_town = town.Town()
     while not quit_game:
         print "Welcome to Arena Fighter v1.0"
         print
@@ -21,22 +17,18 @@ if __name__ == "__main__":
         print "1) New Game"
         print "2) Load Game"
         print "3) Quit"
-        choice = raw_input()
+        choice = int(raw_input())
         if choice == 1:
             player.generate_new_character()
-            # TODO: Add town menu
             player_group = [player]
-            town_menu(player)
+            active_town.main_menu(player_group)
         if choice == 2:
             player.load_character()
-            town_menu(player)
+            active_town.main_menu(player)
         if choice == 3:
             quit_game = True
         else:
             print "Invalid input."
             continue
 
-        # Initialize Combat
-        battle_group = [player, opponent]
-        combat = battle.Battle(battle_group)
 

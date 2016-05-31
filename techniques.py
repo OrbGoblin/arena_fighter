@@ -13,7 +13,6 @@ class Techniques():
         self.ability_point_cost = 0
         # Items only
         self.money_cost = 0
-        self.qty_on_hand
 
 
     def determine_list_of_targets(self, user, combat_group):

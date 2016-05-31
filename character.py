@@ -79,44 +79,44 @@ class Character():
         adjustable_attributes = ["Attack", "Agility", "Max Health", "Ability Points", "Skill Points"]
         points_left = 5
         while points_left > 0:
-            print "You have: " + points_left + " points left."
-            for i in xrange(len(adjustable_attributes)-1):
-                print str(i) + ") " + adjustable_attributes[i]
-            choice = raw_input()
+            print "You have: " + str(points_left) + " points left."
+            for i in xrange(len(adjustable_attributes)):
+                print str(i + 1) + ") " + adjustable_attributes[i]
+            choice = int(raw_input())
             points_left -= 1
             if choice == 1:
                 self.attack += 1
-            if choice == 2:
+            elif choice == 2:
                 self.agility += 1
-            if choice == 3:
+            elif choice == 3:
                 self.max_health += 5
                 self.health = self.max_health
-            if choice == 4:
+            elif choice == 4:
                 self.max_ability_points += 1
                 self.ability_points = self.max_ability_points
-            if choice == 5:
+            elif choice == 5:
                 self.skill_points += 1
             else:
                 points_left += 1
-                print "Invalid Input, enter a number 1 - " + len(adjustable_attributes)
+                print "Invalid Input, enter a number 1 - " + str(len(adjustable_attributes))
 
     def generate_new_character(self):
         print "Creating a new character."
         print "Choose a name: "
         self.name = raw_input()
         print "Choose a profession"
-        for i in xrange(len(self.list_of_professions) -1):
-            print str(i) + ") " + self.list_of_professions[i]
+        for i in xrange(len(self.list_of_professions)):
+            print str(i+1) + ") " + self.list_of_professions[i]
         # TODO: add something that explains each profession
-        choice = raw_input()
-        self.profession = self.list_of_professions[choice]
+        choice = int(raw_input())
+        self.profession = self.list_of_professions[choice-1]
         self.set_player_stats()
         print "Choose a race: "
-        for i in xrange(len(self.list_of_races)-1):
-            print str(i) + ") " + self.list_of_races[i]
+        for i in xrange(len(self.list_of_races)):
+            print str(i+1) + ") " + self.list_of_races[i]
         # TODO: put in something that explains pro/cons of each race
-        choice = raw_input()
-        self.race = self.list_of_races[choice]
+        choice = int(raw_input())
+        self.race = self.list_of_races[choice-1]
         self.adjust_race_stats()
         self.distribute_attribute_points()
 

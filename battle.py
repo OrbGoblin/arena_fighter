@@ -35,7 +35,7 @@ class Battle():
         print "3) Technique"
         print "4) Use Item"
         print "5) Retreat"
-        choice = raw_input()
+        choice = input(raw_input())
         # Attack
         if choice == 1:
             self.attack(combatant)
@@ -91,7 +91,7 @@ class Battle():
         print "Choose an opponent to attack!"
         for i in xrange(len(list_of_opponents)):
             print str(i+1) + ") " + list_of_opponents[i].name
-        choice = raw_input()
+        choice = int(raw_input())
         self.attack_opponent(combatant, list_of_opponents[choice])
         return choice
 
