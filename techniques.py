@@ -14,6 +14,8 @@ class Techniques():
         # Items only
         self.money_cost = 0
 
+    def __hash__(self):
+        return hash(self.name)
 
     def determine_list_of_targets(self, user, combat_group):
         return [target for target in combat_group if target.char_type == self.target_type]
