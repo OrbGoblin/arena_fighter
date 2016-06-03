@@ -2,6 +2,7 @@ import sys
 import character
 import battle
 import shop
+import load_save_game
 
 class Town():
     def __init__(self):
@@ -28,11 +29,11 @@ class Town():
             elif choice == 3:
                 self.visit_inn(player_group)
             elif choice == 5:
-                print "Feature not available"
+                load_save_game.save_game(player_group)
             elif choice == 6:
                 print "Feature not available"
             elif choice == 7:
-                sys.exit(-1)
+                return True
 
     def generate_opponent_group(self):
         opponent1 = character.Character("opponent")

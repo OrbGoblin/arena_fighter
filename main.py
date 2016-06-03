@@ -1,6 +1,8 @@
+import uuid
 import battle
 import character
 import town
+import load_save_game
 
 if __name__ == "__main__":
 
@@ -21,10 +23,10 @@ if __name__ == "__main__":
         if choice == 1:
             player.generate_new_character()
             player_group = [player]
-            active_town.main_menu(player_group)
+            quit_game = active_town.main_menu(player_group)
         if choice == 2:
             player.load_character()
-            active_town.main_menu(player)
+            quit_game = active_town.main_menu(player)
         if choice == 3:
             quit_game = True
         else:

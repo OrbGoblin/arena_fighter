@@ -6,13 +6,22 @@ class Character():
         self.char_type = char_type
         self.name = name
         self.id = uuid.uuid4().int
+        # not preserved save/load
         self.list_of_professions = ["fighter", "engineer", "rogue"]
         self.list_of_races = ["Human", "Mutant", "Cyborg"]
+
         self.skill_points = 0
         # TODO: figure out a way to have money consolidate for a group
         self.money = 100
+        # opponent only
+        if char_type == "player":
+            self.group_id = uuid.uuid4().int
         if char_type == "opponent":
             self.set_opponent()
+        # player only
+
+
+
 
     # Set hash value so we can store characters in dictionaries
     def __hash__(self):
@@ -60,6 +69,7 @@ class Character():
             self.is_dead = False
             self.technique_list = []
             # Key is inventory object, val is qty
+            # TODO: change this to a list, put inventory as an attribute in techniques.py
             self.inventory = {techniques.BeefJerky(): 5}
 
     def adjust_race_stats(self):

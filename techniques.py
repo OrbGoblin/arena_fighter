@@ -26,9 +26,18 @@ class Techniques():
     def choose_targets(self, list_of_targets):
         return None
 
+    def cleanup(self, user):
+        if self.type == "technique":
+            user.ability_points -= self.ability_point_cost
+            print user.name + " pays " + str(self.ability_point_cost) + " ability points."
+        elif self.type == "item":
+            print user.name + " uses up a " + self.name
+            user.inventory[self] -= 1
+
 class FireBall(Techniques):
     def __init__(self, target_type):
         Techniques.__init__(self, target_type)
+        self.type = "technique"
         self.min_damage = 1
         self.max_damage = 10
         self.ability_point_cost = 3
@@ -37,15 +46,15 @@ class FireBall(Techniques):
                           "Ability point cost: " + str(self.ability_point_cost)
 
     def activate_technique(self, user, list_of_targets):
-        user.ability_points -= self.ability_point_cost
         print user.name + " shoots a fireball!"
         damage = randint(self.min_damage, self.max_damage)
         for target in list_of_targets:
-            print target.name + " is hit with a fireball for " + damage + " damage!"
+            print target.name + " is hit with a fireball for " + str(damage) + " damage!"
             target.health -= damage
             if target.health <= 0:
                 print target.name + " is dead."
                 target.is_dead = True
+        print
 
     def choose_targets(self, list_of_targets):
         return list_of_targets
@@ -53,6 +62,7 @@ class FireBall(Techniques):
 class Heal(Techniques):
     def __init__(self, target_type):
         Techniques.__init__(self, target_type)
+        self.type = "technique"
         self.total_heal = 5
         self.ability_point_cost = 2
         self.name = "Heal"
@@ -60,7 +70,9 @@ class Heal(Techniques):
                                 "Ability point cost: " + str(self.ability_point_cost)
 
     def activate_technique(self, user, list_of_targets):
-        user.ability_points -= self.ability_point_cost
+        if len(list_of_targets) <= 0:
+            print "The tech has no target and fizzles"
+            return
         print user.name + " uses heal!"
         for target in list_of_targets:
             print target.name + " is healed for " + str(self.total_heal / len(list_of_targets))
@@ -69,50 +81,53 @@ class Heal(Techniques):
             target.health += self.total_heal / len(list_of_targets)
 
     def choose_targets(self, list_of_targets):
-        chosen_targets = []
-        done_choosing = False
-        while not done_choosing:
-            if len(chosen_targets) > 0:
+        selected_targets = []
+        unselected_targets = []
+        while True:
+            if len(selected_targets) > 0:
                 print "Targets currently chosen: "
-                for target in chosen_targets:
+                for target in selected_targets:
                     print target.name
-
                 print
-            if len(list_of_targets) > 0:
+            if len(unselected_targets) > 0:
                 print "Unselected targets: "
                 for target in list_of_targets:
                     print target.name
                 print
-            print "Would you like to add or remove a target?"
+            print "Type add to select a target and remove to unselect?"
             print "Type done and press enter when finished."
-            print
             choice = raw_input()
-            if choice == "add" and len(chosen_targets) < len(list_of_targets):
+            if choice == "add" and len(selected_targets) <= len(list_of_targets):
                 print "Choose a target to add:"
-                for i in range(len(list_of_targets)-1):
+                for i in range(len(list_of_targets)):
                     target = list_of_targets[i]
                     print str(i+1) + ") " + target.name
                 print
-                choice = raw_input("")
-                chosen_targets.append(list_of_targets[choice])
-                del list_of_targets[choice]
-            elif choice == "remove" and len(chosen_targets) > 0:
+                choice = int(raw_input("")) - 1
+                choice = list_of_targets[choice]
+                selected_targets.append(choice)
+                # TODO: extract cleanup
+                if len(unselected_targets) > 0:
+                    for i in xrange(len(unselected_targets)):
+                        if unselected_targets[i].name == choice.name:
+                            del unselected_targets[i]
+
+            elif choice == "remove" and len(selected_targets) > 0:
                 print "Choose a target to remove:"
-                for i in range(len(chosen_targets)-1):
+                for i in xrange(len(selected_targets)):
                     target = list_of_targets[i]
                     print str(i+1) + ") " + target.name
-                print
-                choice = raw_input("")
-                list_of_targets.append(chosen_targets[choice])
-                del chosen_targets[choice]
+                choice = int(raw_input("")) - 1
+                choice = selected_targets[choice]
+                list_of_targets.append([choice])
+                del selected_targets[choice]
             else:
-                if choice != "done":
-                    continue
-                done_choosing = True
+                return selected_targets
 
 class Beep(Techniques):
     def __init__(self, target_type):
         Techniques.__init__(self, target_type)
+        self.type = "technique"
         self.damage = 1
         self.ability_point_cost = 1
         self.name = "Beep"
@@ -134,20 +149,25 @@ class Beep(Techniques):
 class BeefJerky(Techniques):
     def __init__(self):
         Techniques.__init__(self, target_type="self")
+        self.type = "item"
         self.heal_amount = 3
         self.name = "Beef Jerky"
         self.description = "Heal yourself for " + str(self.heal_amount)
         self.money_cost = 20
 
     def determine_list_of_targets(self, user, combat_group):
-            return [user]
+            return user
 
     def choose_targets(self, list_of_targets):
         return list_of_targets
 
     def activate_technique(self, user, target):
-        if self.heal_amount + target.health > target.max_health:
-            self.heal_amount = target.max_health - target.health
         print "You eat some hearty " + self.name
-        print "You are healed +" + self.heal_amount
-        target.health += self.heal_amount
+        if self.heal_amount + target.health >= target.max_health:
+            heal_text = str(target.max_health - target.health)
+            target.health = target.max_health
+            print "You healed " + heal_text
+        else:
+            target.health += self.heal_amount
+            print "You are healed +" + str(self.heal_amount)
+
