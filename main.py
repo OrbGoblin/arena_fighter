@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     quit_game = False
     char_type = "player"
-    char_name = "Test McTesterton"
+    char_name = "Testy McTesterton"
     player = character.Character(char_type, char_name)
     active_town = town.Town()
     while not quit_game:
@@ -25,8 +25,8 @@ if __name__ == "__main__":
             player_group = [player]
             quit_game = active_town.main_menu(player_group)
         if choice == 2:
-            player.load_character()
-            quit_game = active_town.main_menu(player)
+            player_group = load_save_game.load_game()
+            quit_game = active_town.main_menu(player_group)
         if choice == 3:
             quit_game = True
         else:

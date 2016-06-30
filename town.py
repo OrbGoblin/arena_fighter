@@ -3,8 +3,9 @@ import character
 import battle
 import shop
 import load_save_game
+import pickle
 
-class Town():
+class Town:
     def __init__(self):
         self.shop = shop.Shop()
 
@@ -30,8 +31,9 @@ class Town():
                 self.visit_inn(player_group)
             elif choice == 5:
                 load_save_game.save_game(player_group)
+                print "Game Saved"
             elif choice == 6:
-                print "Feature not available"
+                player_group = load_save_game.load_game()
             elif choice == 7:
                 return True
 

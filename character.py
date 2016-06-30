@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 import techniques
 
 class Character():
@@ -9,6 +10,7 @@ class Character():
         # not preserved save/load
         self.list_of_professions = ["fighter", "engineer", "rogue"]
         self.list_of_races = ["Human", "Mutant", "Cyborg"]
+        self.char_date = datetime.now().time()
 
         self.skill_points = 0
         # TODO: figure out a way to have money consolidate for a group
