@@ -1,17 +1,17 @@
 import os
 import pickle
-import character
 from datetime import datetime
 
 script_root = os.path.dirname(os.path.abspath(__file__))
-save_load_root = os.path.join(script_root,"//saved_games//")
+save_load_root = os.path.join(script_root,"saved_games")
 if not os.path.isdir(save_load_root):
     os.mkdir(save_load_root)
 
 def save_game(player_group):
     for player in player_group:
-        player.char_date = datetime.now().time()
-        pickle_path = os.path.join(save_load_root, player.name)
+        player.save_timestamp = datetime.now().time()
+        save_date = str(player.save_timestamp).replace(":","_")
+        pickle_path = os.path.join(save_load_root, player.name + save_date)
         pickle.dump(player, open(pickle_path + ".p", mode="wb"))
 
 
@@ -31,7 +31,7 @@ def load_game():
     menu_idx = 1
     for player in player_list:
         menu_choice[menu_idx] = player
-        print str(menu_idx) + ") " + player.name + " " + str(player.char_date)
+        print str(menu_idx) + ") " + player.name + " " + str(player.save_timestamp)
         menu_idx += 1
     choice = int(raw_input())
     player_group = menu_choice[choice]
